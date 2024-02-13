@@ -1,17 +1,27 @@
 import pandas as pd
 import os
 import numpy as np
+import argparse
+from parameters import names, colspecs
 
-pdb_path = "C:/Users/User/Downloads/test_input_dir/4c7n.pdb"
-colspecs = [(0, 6), (6, 11), (12, 16), (16, 17), (17, 20), (21, 22), (22, 26),
-            (26, 27), (30, 38), (38, 46), (46, 54), (54, 60), (60, 66), (76, 78),
-            (78, 80)]
 
-names = ['ATOM', 'serial', 'name', 'altloc', 'resname', 'chainid', 'resseq',
-         'icode', 'x', 'y', 'z', 'occupancy', 'tempfactor', 'element', 'charge']
 
-# Read PDB file into a DataFrame
-pdb = pd.read_fwf(pdb_path, names=names, colspecs=colspecs)
+def read_pdb(pdb_path):
+    # Read PDB file into a DataFrame
+    return pd.read_fwf(pdb_path, names=names, colspecs=colspecs)
+
+
+parser = argparse.ArgumentParser(description="Give something ...")
+parser.add_argument("-pdb_path", type=str, required=True, help="")
+args=parser.parse_args()
+
+
+
+#  if __main__ == "__name__":
+pdb_path = args.pdb_path
+pdb = read_pdb(pdb_path)
+
+
 
 # Extract lines starting with "ATOM" from the DataFrame
 pdb_atom_df = pdb[pdb['ATOM'] == 'ATOM']
